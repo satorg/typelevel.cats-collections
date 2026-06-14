@@ -332,4 +332,67 @@ class BListSuite extends DisciplineSuite {
   property("fromListReverse == .reverse fromList")(forAll { (xs: List[Int]) =>
     assertEquals(BList.fromListReverse(xs).toString, BList.fromList(xs.reverse).toString)
   })
+
+  test("prepend with forking") {
+    val a = BList.Empty.prepend("a")
+
+    val ba = a.prepend("b")
+    val cba = ba.prepend("c")
+    val dcba = cba.prepend("d")
+    val edcba = dcba.prepend("e")
+    val fedcba = edcba.prepend("f")
+    val gfedcba = fedcba.prepend("g")
+
+    val ha = a.prepend("h")
+    val iha = ha.prepend("i")
+    val jiha = iha.prepend("j")
+
+    val kba = ba.prepend("k")
+    val lkba = kba.prepend("l")
+    val mlkba = lkba.prepend("m")
+
+    val ndcba = dcba.prepend("n")
+    val ondcba = ndcba.prepend("o")
+    val pondcba = ondcba.prepend("p")
+
+    val qjiha = jiha.prepend("q")
+    val rqjiha = qjiha.prepend("r")
+    val srqjiha = rqjiha.prepend("s")
+
+    val tlkba = lkba.prepend("t")
+    val utlkba = tlkba.prepend("u")
+    val vutlkba = utlkba.prepend("v")
+
+    val wcba = cba.prepend("w")
+    val xwcba = wcba.prepend("x")
+    val yxwcba = xwcba.prepend("y")
+    val zyxwcba = yxwcba.prepend("z")
+
+    assertEquals(a.toList.mkString, "a")
+    assertEquals(ba.toList.mkString, "ba")
+    assertEquals(cba.toList.mkString, "cba")
+    assertEquals(dcba.toList.mkString, "dcba")
+    assertEquals(edcba.toList.mkString, "edcba")
+    assertEquals(fedcba.toList.mkString, "fedcba")
+    assertEquals(gfedcba.toList.mkString, "gfedcba")
+    assertEquals(ha.toList.mkString, "ha")
+    assertEquals(iha.toList.mkString, "iha")
+    assertEquals(jiha.toList.mkString, "jiha")
+    assertEquals(kba.toList.mkString, "kba")
+    assertEquals(lkba.toList.mkString, "lkba")
+    assertEquals(mlkba.toList.mkString, "mlkba")
+    assertEquals(ndcba.toList.mkString, "ndcba")
+    assertEquals(ondcba.toList.mkString, "ondcba")
+    assertEquals(pondcba.toList.mkString, "pondcba")
+    assertEquals(qjiha.toList.mkString, "qjiha")
+    assertEquals(rqjiha.toList.mkString, "rqjiha")
+    assertEquals(srqjiha.toList.mkString, "srqjiha")
+    assertEquals(tlkba.toList.mkString, "tlkba")
+    assertEquals(utlkba.toList.mkString, "utlkba")
+    assertEquals(vutlkba.toList.mkString, "vutlkba")
+    assertEquals(wcba.toList.mkString, "wcba")
+    assertEquals(xwcba.toList.mkString, "xwcba")
+    assertEquals(yxwcba.toList.mkString, "yxwcba")
+    assertEquals(zyxwcba.toList.mkString, "zyxwcba")
+  }
 }

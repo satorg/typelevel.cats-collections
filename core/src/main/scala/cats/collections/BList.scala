@@ -119,15 +119,24 @@ object BList {
 
   // (maybe impl will be covariant or not)
   private case class Impl[A](offset: Int, block: Array[A], tailBList: BList[A]) extends NonEmpty[A] {
+    private var shared: Boolean = false
+
     def uncons: Some[(A, BList[A])] = {
       Some((block(offset), this.tail))
     }
     def prepend[B >: A](a: B): BList.NonEmpty[B] = {
       if (offset > 0) {
-        val ary = block.clone().asInstanceOf[Array[B]]
         val nextOffset = offset - 1
-        ary(nextOffset) = a
-        Impl(nextOffset, ary, tailBList)
+        if (shared) {
+          val ary = new Array[Any](BlockSize)
+          System.arraycopy(block, offset, ary, offset, BlockSize - offset)
+          ary(nextOffset) = a
+          Impl(nextOffset, ary, tailBList)
+        } else {
+          shared = true
+          block(nextOffset) = a.asInstanceOf[A]
+          Impl(nextOffset, block, tailBList)
+        }
       } else {
         val ary = new Array[Any](BlockSize) // need a blank one for a new block
         val offset = BlockSize - 1
